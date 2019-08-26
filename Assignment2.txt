@@ -1,0 +1,217 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.1.38-community MySQL Community Server (GPL)
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE TABLE TextDataTypes
+    -> (
+    ->   A char(10),
+    ->   B varchar(10),
+    ->   c Text
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> create database datatype
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| adventureworks     |
+| datatype           |
+| mydb               |
+| mydb1              |
+| mysql              |
+| prac               |
+| student_info       |
+| vocab              |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> CREATE TABLE TextDataTypes
+    -> (
+    ->   A char(10),
+    ->   B varchar(10),
+    ->   c Text
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> use datatype;
+Database changed
+mysql> CREATE TABLE TextDataTypes
+    -> (
+    ->   A char(10),
+    ->   B varchar(10),
+    ->   c Text
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO TextDataTypes
+    ->   VALUES
+    -> ('abcdef', '123', 'Text data - larger strings are accepted here'),
+    ->
+    -> ('abcdef', 'abcdef', 'Text data - larger strings are accepted here');
+Query OK, 2 rows affected (0.03 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select *
+    -> from TextDataType
+    -> ;
+ERROR 1146 (42S02): Table 'datatype.textdatatype' doesn't exist
+mysql> select *
+    -> from TextDataTypes;
++--------+--------+----------------------------------------------+
+| A      | B      | c                                            |
++--------+--------+----------------------------------------------+
+| abcdef | 123    | Text data - larger strings are accepted here |
+| abcdef | abcdef | Text data - larger strings are accepted here |
++--------+--------+----------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE NumDatatypes
+    -> (
+    -> A tinyint,
+    -> B smallint,
+    -> C mediumint,
+    -> D int,
+    -> E bigint,
+    -> F decimal(8, 2),
+    -> G double(8,2),
+    -> H float
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select *
+    -> from NumDatatypes;
+Empty set (0.00 sec)
+
+mysql>
+mysql> INSERT INTO NumDatatypes VALUES
+    -> (13, 130, 33456, 333456, 33333456,
+    -> 999999.99, 999999.99, 999999.99);
+Query OK, 1 row affected (0.03 sec)
+
+mysql>
+mysql> INSERT INTO NumDatatypes VALUES
+    -> (110, 234, 3345, 33345, 3333345,
+    -> 999999.9, 999999.99, 999999.99);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *
+    -> from NumDatatypes;
++------+------+-------+--------+----------+-----------+-----------+--------+
+| A    | B    | C     | D      | E        | F         | G         | H      |
++------+------+-------+--------+----------+-----------+-----------+--------+
+|   13 |  130 | 33456 | 333456 | 33333456 | 999999.99 | 999999.99 | 1e+006 |
+|  110 |  234 |  3345 |  33345 |  3333345 | 999999.90 | 999999.99 | 1e+006 |
++------+------+-------+--------+----------+-----------+-----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE DateDataTypes
+    -> (
+    -> A date,
+    -> B datetime,
+    -> C timestamp,
+    -> D time
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> select *
+    -> from DateDataTypes
+    -> ;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO DateDataTypes VALUES
+    -> (Current_date(), now(), now(),
+    -> now());
+Query OK, 1 row affected (0.03 sec)
+
+mysql>
+mysql> INSERT INTO DateDataTypes VALUES
+    -> ('2019-13-26',
+    ->  '2019-08-26 10:30:23',
+    ->  '20190826103023',
+    ->  '10:30:23'
+    -> );
+ERROR 1292 (22007): Incorrect date value: '2019-13-26' for column 'A' at row 1
+mysql>
+mysql> INSERT INTO DateDataTypes VALUES
+    -> ('2019-12-26',
+    ->  '2019-08-26 10:30:23',
+    ->  '20190826103023',
+    ->  '10:30:23'
+    -> );
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select *
+    -> from DateDataTypes;
++------------+---------------------+---------------------+----------+
+| A          | B                   | C                   | D        |
++------------+---------------------+---------------------+----------+
+| 2019-08-26 | 2019-08-26 20:30:05 | 2019-08-26 20:30:05 | 20:30:05 |
+| 2019-12-26 | 2019-08-26 10:30:23 | 2019-08-26 10:30:23 | 10:30:23 |
++------------+---------------------+---------------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE SplDataTypes
+    -> (
+    ->   ID int AUTO_INCREMENT
+    ->   primary key,
+    ->   Membership ENUM('Silver',
+    ->   'Gold', 'Platinum'),
+    ->   Hobbies SET('Swimming',
+    ->   'Sking', 'Cricket',
+    ->   'Football')
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO SplDataTypes
+    -> (Membership, Hobbies)
+    ->  VALUES
+    -> ('Silver',
+    ->  'Sking,bowling'
+    -> );
+ERROR 1265 (01000): Data truncated for column 'Hobbies' at row 1
+mysql> INSERT INTO SplDataTypes
+    -> (Membership, Hobbies)
+    ->  VALUES
+    -> ('Silver',
+    -> 'bowling');
+ERROR 1265 (01000): Data truncated for column 'Hobbies' at row 1
+mysql> select *
+    -> from SplDataTypes
+    -> ;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO SplDataTypes
+    -> (Membership, Hobbies)
+    ->  VALUES
+    -> ('Silver',
+    -> 'bowling');
+ERROR 1265 (01000): Data truncated for column 'Hobbies' at row 1
+mysql>
+mysql> INSERT INTO SplDataTypes
+    -> (Membership, Hobbies)
+    ->  VALUES
+    -> ('Silver',
+    -> 'Swimming');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select *
+    -> from SplDataTypes;
++----+------------+----------+
+| ID | Membership | Hobbies  |
++----+------------+----------+
+|  1 | Silver     | Swimming |
++----+------------+----------+
+1 row in set (0.01 sec)
+
+mysql> -- Sorting data.
+mysql> ORDER BY.
+    ->
+    ->
